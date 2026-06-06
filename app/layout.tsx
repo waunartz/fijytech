@@ -6,8 +6,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "FijyTech — AI Otomasyon Ajansı",
-  description:
-    "FijyTech, işletmenizi yapay zeka ile otomatize eden öncü AI otomasyon ajansı. Müşteri bulma, iş süreci otomasyonu ve daha fazlası.",
+  description: "Şirketinizi otomatik pilota alın",
+  icons: {
+    icon: "/fijytech.png",
+    apple: "/fijytech.png",
+  },
 };
 
 export default function RootLayout({
