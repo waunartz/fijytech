@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 const plans = [
@@ -36,7 +36,37 @@ const plans = [
   },
 ];
 
+type Status = "idle" | "loading" | "success" | "error";
+
 export default function Pricing() {
+  const [form, setForm] = useState({
+    isim: "",
+    email: "",
+    telefon: "",
+    mesaj: "",
+  });
+  const [status, setStatus] = useState<Status>("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setStatus("success");
+        setForm({ isim: "", email: "", telefon: "", mesaj: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
   return (
     <section id="teklif" className="py-20 lg:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -62,7 +92,7 @@ export default function Pricing() {
         </motion.div>
 
         {/* Plans */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
           {plans.map((plan, i) => (
             <motion.div
               key={plan.type}
@@ -116,20 +146,107 @@ export default function Pricing() {
               <p className="text-xs text-gray-400 mb-4">
                 <span className="font-semibold">İdeal:</span> {plan.ideal}
               </p>
-
-              <Link
-                href="#cta"
-                className={`block w-full text-center py-3.5 rounded-xl font-semibold transition-all duration-200 ${
-                  plan.badge
-                    ? "bg-[#E24B4A] hover:bg-[#c93c3b] text-white shadow-lg shadow-[#E24B4A]/25 hover:shadow-xl hover:shadow-[#E24B4A]/30"
-                    : "bg-gray-900 hover:bg-gray-800 text-white"
-                }`}
-              >
-                Ücretsiz Teklif Al
-              </Link>
             </motion.div>
           ))}
         </div>
+
+        {/* Contact Form */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="max-w-2xl mx-auto bg-gray-50 rounded-2xl p-8 border border-gray-100"
+        >
+          <h3 className="text-2xl font-bold text-gray-900 mb-2 text-center">
+            Ücretsiz Teklif Formu
+          </h3>
+          <p className="text-gray-500 text-sm text-center mb-8">
+            Formu doldurun, 24 saat içinde size dönelim.
+          </p>
+
+          {status === "success" ? (
+            <div className="text-center py-8">
+              <div className="text-5xl mb-4">✅</div>
+              <p className="text-gray-900 font-semibold text-lg">Talebiniz alındı!</p>
+              <p className="text-gray-500 text-sm mt-2">
+                En kısa sürede size geri döneceğiz.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    İsim Soyisim <span className="text-[#E24B4A]">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={form.isim}
+                    onChange={(e) => setForm({ ...form, isim: e.target.value })}
+                    placeholder="Ahmet Yılmaz"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E24B4A] focus:outline-none focus:ring-2 focus:ring-[#E24B4A]/10 text-sm bg-white transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    E-posta <span className="text-[#E24B4A]">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="ahmet@sirket.com"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E24B4A] focus:outline-none focus:ring-2 focus:ring-[#E24B4A]/10 text-sm bg-white transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Telefon
+                </label>
+                <input
+                  type="tel"
+                  value={form.telefon}
+                  onChange={(e) => setForm({ ...form, telefon: e.target.value })}
+                  placeholder="+90 555 000 00 00"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E24B4A] focus:outline-none focus:ring-2 focus:ring-[#E24B4A]/10 text-sm bg-white transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Projeniz Hakkında <span className="text-[#E24B4A]">*</span>
+                </label>
+                <textarea
+                  required
+                  rows={4}
+                  value={form.mesaj}
+                  onChange={(e) => setForm({ ...form, mesaj: e.target.value })}
+                  placeholder="Hangi süreçleri otomatize etmek istiyorsunuz? Kısaca anlatın..."
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#E24B4A] focus:outline-none focus:ring-2 focus:ring-[#E24B4A]/10 text-sm bg-white transition-colors resize-none"
+                />
+              </div>
+
+              {status === "error" && (
+                <p className="text-red-500 text-sm text-center">
+                  Bir hata oluştu. Lütfen tekrar deneyin.
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full bg-[#E24B4A] hover:bg-[#c93c3b] disabled:opacity-60 text-white py-3.5 rounded-xl font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-[#E24B4A]/30"
+              >
+                {status === "loading" ? "Gönderiliyor..." : "Ücretsiz Teklif Al"}
+              </button>
+            </form>
+          )}
+        </motion.div>
       </div>
     </section>
   );
