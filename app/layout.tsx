@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   description: "Şirketinizi otomatik pilota alın",
   icons: {
     icon: "/fijytech.png",
+    shortcut: "/fijytech.png",
     apple: "/fijytech.png",
   },
 };
