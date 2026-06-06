@@ -1,0 +1,8 @@
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Icon mark -->
+  <rect x="0" y="8" width="24" height="24" rx="6" fill="#E24B4A"/>
+  <path d="M7 20L12 14L17 20L12 26Z" fill="white"/>
+  <!-- Text -->
+  <text x="32" y="27" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#1a1a1a">Fijy</text>
+  <text x="72" y="27" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#E24B4A">Tech</text>
+</svg>
