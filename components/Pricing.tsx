@@ -49,8 +49,10 @@ export default function Pricing() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form gönderiliyor...");
     setStatus("loading");
     try {
+      console.log("API isteği atılıyor:", form);
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

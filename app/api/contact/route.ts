@@ -5,10 +5,11 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   const { isim, email, telefon, mesaj } = await req.json();
+  console.log('API çağrıldı:', { isim, email, telefon, mesaj });
 
   try {
     await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: 'teklif@fijytech.com',
       to: 'sarpsensan@fijytech.com',
       subject: `Yeni Teklif Talebi - ${isim}`,
       html: `
