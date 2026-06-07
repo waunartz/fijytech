@@ -25,7 +25,7 @@ export default function Mission() {
             <span className="text-[#E24B4A] font-semibold text-sm uppercase tracking-widest">
               Misyonumuz
             </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mt-4 leading-tight">
+            <h2 className="text-[2rem] sm:text-5xl lg:text-6xl font-bold text-gray-900 mt-4 leading-tight">
               Neden
               <br />
               <span className="text-[#E24B4A]">Fijytech?</span>
